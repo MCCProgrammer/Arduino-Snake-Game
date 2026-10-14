@@ -5,7 +5,8 @@
 
 The classic Snake game on an **8×8 LED matrix**, driven directly by an Arduino Uno with two push buttons and no extra libraries or driver chips.
 
-![Snake running on the 8x8 LED matrix next to the Arduino Uno and two buttons](docs/photo.png)
+![Illustration: snake running on the 8x8 LED matrix next to the Arduino Uno and two buttons](docs/photo.png)
+<sub>AI-generated illustration of the build.</sub>
 
 ## How it works
 
