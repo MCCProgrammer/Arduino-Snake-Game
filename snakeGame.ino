@@ -24,15 +24,15 @@ Point snake[64];
 int snakeLength = 3;
 Point food;
 
-// Botões
+// Buttons
 #define BTN_UP    A5
 #define BTN_LEFT  A4
 
 // 0=RIGHT, 1=DOWN, 2=LEFT, 3=UP
-byte direction = 3; // começa subindo
+byte direction = 3; // starts moving up
 
 unsigned long lastMove = 0;
-unsigned long moveDelay = 400; // tempo entre movimentos
+unsigned long moveDelay = 400; // time between moves (ms)
 unsigned long lastButtonPress = 0;
 unsigned long debounceDelay = 150;
 
@@ -44,7 +44,7 @@ void setup() {
   pinMode(BTN_UP, INPUT_PULLUP);
   pinMode(BTN_LEFT, INPUT_PULLUP);
 
-  // cobra inicia no meio
+  // the snake starts in the middle
   snake[0] = {3, 4};
   snake[1] = {2, 4};
   snake[2] = {1, 4};
@@ -53,7 +53,7 @@ void setup() {
 }
 
 void loop() {
-  // botões
+  // buttons
   if (digitalRead(BTN_UP) == LOW && millis() - lastButtonPress > debounceDelay) {
     changeDirection(3); // UP
     lastButtonPress = millis();
@@ -63,7 +63,7 @@ void loop() {
     lastButtonPress = millis();
   }
 
-  // movimento automático
+  // automatic movement
   if (millis() - lastMove > moveDelay) {
     moveSnake(direction);
     lastMove = millis();
@@ -72,12 +72,12 @@ void loop() {
   drawSnake();
 }
 
-// muda direção ou inverte cobra se direção oposta
+// changes direction, or reverses the snake if the new direction is the opposite one
 void changeDirection(byte newDir) {
-  // detecta direção oposta
+  // opposite direction?
   if ((direction == 0 && newDir == 2) || (direction == 2 && newDir == 0) ||
       (direction == 1 && newDir == 3) || (direction == 3 && newDir == 1)) {
-    // inverter a cobra: cauda vira cabeça
+    // reverse the snake: the tail becomes the head
     for (int i = 0; i < snakeLength / 2; i++) {
       Point temp = snake[i];
       snake[i] = snake[snakeLength - 1 - i];
@@ -87,7 +87,7 @@ void changeDirection(byte newDir) {
   direction = newDir;
 }
 
-// move a cobra em 1 passo
+// moves the snake one step
 void moveSnake(byte dir) {
   Point newHead = snake[0];
 
@@ -96,7 +96,7 @@ void moveSnake(byte dir) {
   if (dir == 1) newHead.y = (newHead.y + 1) % 8;       // DOWN
   if (dir == 3) newHead.y = (newHead.y + 7) % 8;       // UP (wrap-around)
 
-  // colisão com corpo
+  // collision with its own body
   for (int i = 0; i < snakeLength; i++) {
     if (snake[i].x == newHead.x && snake[i].y == newHead.y) {
       resetGame();
@@ -104,13 +104,13 @@ void moveSnake(byte dir) {
     }
   }
 
-  // shift corpo
+  // shift the body
   for (int i = snakeLength; i > 0; i--) {
     snake[i] = snake[i - 1];
   }
   snake[0] = newHead;
 
-  // comida
+  // food
   if (newHead.x == food.x && newHead.y == food.y) {
     snakeLength++;
     spawnFood();
@@ -149,6 +149,6 @@ void resetGame() {
   snake[0] = {3, 4};
   snake[1] = {2, 4};
   snake[2] = {1, 4};
-  direction = 3; // começa subindo
+  direction = 3; // starts moving up
   spawnFood();
 }
